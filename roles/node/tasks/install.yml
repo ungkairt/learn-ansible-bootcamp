@@ -4,11 +4,13 @@
   args:
     creates: "{{ '~/.nvm' if ansible_os_family == 'Darwin' else '/root/.nvm' }}"
 
-- name: Load NVM and install latest Node.js
+- name: Load NVM and install specific Node.js version
+  vars:
+    node_version: "18.17.0"
   shell: |
     export NVM_DIR="{{ '~/.nvm' if ansible_os_family == 'Darwin' else '/root/.nvm' }}"
     source $NVM_DIR/nvm.sh
-    nvm install node
-    nvm alias default node
+    nvm install {{ node_version }}
+    nvm alias default {{ node_version }}
   args:
     executable: /bin/bash

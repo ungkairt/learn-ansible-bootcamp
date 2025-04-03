@@ -1,0 +1,16 @@
+- name: Manage Development Environment on Localhost
+  hosts: localhost
+  connection: local
+  become: yes
+  become_method: sudo
+  become_user: root
+  tasks:
+  - name: Install Node.js
+    import_tasks: roles/node/tasks/uninstall.yml
+
+  - name: Install Ruby
+    import_tasks: roles/ruby/tasks/uninstall.yml
+
+  - name: Install PostgreSQL
+    import_tasks: roles/postgresql/tasks/uninstall.yml
+
