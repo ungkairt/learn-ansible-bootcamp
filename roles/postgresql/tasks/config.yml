@@ -1,0 +1,13 @@
+---
+- name: Allow remote connections to PostgreSQL
+  lineinfile:
+    path: /etc/postgresql/15/main/postgresql.conf
+    regexp: "^#?listen_addresses"
+    line: "listen_addresses = '*'"
+  notify: Restart PostgreSQL
+
+- name: Add client authentication rule for PostgreSQL
+  lineinfile:
+    path: /etc/postgresql/15/main/pg_hba.conf
+    line: "host all all 0.0.0.0/0 md5"
+  notify: Restart PostgreSQL

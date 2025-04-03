@@ -1,0 +1,9 @@
+---
+- name: Uninstall Development Environment on Localhost
+  hosts: localhost
+  connection: local
+  become: yes
+  roles:
+    - { role: node, tasks_from: uninstall }
+    - { role: ruby, tasks_from: uninstall }
+    - { role: postgresql, tasks_from: uninstall }

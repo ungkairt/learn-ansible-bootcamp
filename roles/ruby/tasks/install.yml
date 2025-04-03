@@ -1,0 +1,48 @@
+- name: Install dependencies for Ruby (Ubuntu)
+  apt:
+    name:
+      - build-essential
+      - libssl-dev
+      - libreadline-dev
+      - zlib1g-dev
+    state: present
+  when: ansible_os_family == "Debian"
+
+- name: Install dependencies for Ruby (macOS)
+  homebrew:
+    name: readline
+    state: present
+  when: ansible_os_family == "Darwin"
+
+- name: Clone rbenv (Linux & macOS)
+  git:
+    repo: 'https://github.com/rbenv/rbenv.git'
+    dest: "{{ '~/.rbenv' if ansible_os_family == 'Darwin' else '/root/.rbenv' }}"
+    depth: 1
+
+- name: Set up rbenv in profile (Linux)
+  shell: |
+    echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc
+    echo 'eval "$(rbenv init - bash)"' >> ~/.bashrc
+  when: ansible_os_family == "Debian"
+
+- name: Set up rbenv in profile (macOS)
+  shell: |
+    echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.zshrc
+    echo 'eval "$(rbenv init - zsh)"' >> ~/.zshrc
+  when: ansible_os_family == "Darwin"
+
+- name: Clone ruby-build (Linux & macOS)
+  git:
+    repo: 'https://github.com/rbenv/ruby-build.git'
+    dest: "{{ '~/.rbenv/plugins/ruby-build' if ansible_os_family == 'Darwin' else '/root/.rbenv/plugins/ruby-build' }}"
+    depth: 1
+
+- name: Install latest stable Ruby
+  shell: |
+    export PATH="$HOME/.rbenv/bin:$PATH"
+    eval "$(rbenv init -)"
+    rbenv install -v 3.2.2
+    rbenv global 3.2.2
+  args:
+    executable: /bin/bash -lc

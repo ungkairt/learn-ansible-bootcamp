@@ -1,0 +1,9 @@
+---
+- name: Manage Development Environment on Localhost
+  hosts: localhost
+  connection: local
+  become: yes
+  roles:
+    - node
+    - ruby
+    - postgresql

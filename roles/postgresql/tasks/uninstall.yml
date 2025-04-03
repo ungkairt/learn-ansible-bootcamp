@@ -1,0 +1,11 @@
+- name: Uninstall PostgreSQL on Ubuntu
+  apt:
+    name: postgresql
+    state: absent
+  when: ansible_os_family == "Debian"
+
+- name: Uninstall PostgreSQL on macOS
+  homebrew:
+    name: postgresql
+    state: absent
+  when: ansible_os_family == "Darwin"

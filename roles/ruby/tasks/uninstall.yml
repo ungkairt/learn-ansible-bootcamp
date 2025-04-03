@@ -1,0 +1,14 @@
+- name: Remove rbenv & Ruby (Linux & macOS)
+  file:
+    path: "{{ '~/.rbenv' if ansible_os_family == 'Darwin' else '/root/.rbenv' }}"
+    state: absent
+
+- name: Remove rbenv paths from shell profile (Linux)
+  shell: |
+    sed -i '/rbenv/d' ~/.bashrc
+  when: ansible_os_family == "Debian"
+
+- name: Remove rbenv paths from shell profile (macOS)
+  shell: |
+    sed -i '' '/rbenv/d' ~/.zshrc
+  when: ansible_os_family == "Darwin"
