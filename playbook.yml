@@ -1,0 +1,11 @@
+- hosts: all
+  become: true
+
+  vars_files:
+    - vars.yml
+
+  roles:
+    - role: ruby
+    - postgresql
+    - role: nvm_node
+      become: false
